@@ -1,18 +1,18 @@
 defmodule ExReddit.OAuth do
-  def get_oauth_token() do
-    request_oauth_token().body
+  def get_token() do
+    request_token().body
       |> Poison.decode
       |> ok # TODO: Handle errors
       |> Map.get("access_token")
   end
 
-  defp request_oauth_token do
-    oauth_config = get_oauth_config()
-    headers = get_auth_headers(oauth_config)
+  defp request_token do
+    config = get_config()
+    headers = get_auth_headers(config)
     HTTPotion.post!("https://www.reddit.com/api/v1/access_token", headers)
   end
 
-  defp get_oauth_config() do
+  defp get_config() do
     %{
       username: Application.get_env(:exreddit, :username),
       password: Application.get_env(:exreddit, :password),
