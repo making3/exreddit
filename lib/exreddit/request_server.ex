@@ -42,8 +42,8 @@ defmodule ExReddit.RequestServer do
 
   defp get_query(options) do
     query = options
-      |> Enum.map(fn {key, value} -> "#{key}=#{value}" end) # TODO: Can this be cleaned up / shortened?
-      |> Enum.join("&")
+    |> Enum.map(fn {key, value} -> "#{key}=#{value}" end) # TODO: Can this be cleaned up / shortened?
+    |> Enum.join("&")
     "?#{query}"
   end
 

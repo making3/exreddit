@@ -5,8 +5,8 @@ defmodule ExReddit.Api do
   def get_comments(token, subreddit, thread_id, opts) do
     # TODO: Remove limit, or find a way to process more than the limit (I'm sure there is a max..limit)
     request({:uri, "/r/#{subreddit}/comments/#{thread_id}"}, token, opts)
-      |> Map.get(:body)
-      |> get_request_body
+    |> Map.get(:body)
+    |> get_request_body
   end
 
   def request(params, token, opts \\ []) do
