@@ -1,23 +1,24 @@
 defmodule ExReddit.OAuth do
   def get_token do
-    request_token() |> get_body
+    case request_token() do
+      %HTTPotion.Response{body: body, status_code: 200} ->
+        get_access_token(body)
+      %HTTPotion.ErrorResponse{message: error_message} ->
+        {:error, error_message}
+      error ->
+        error
+    end
   end
 
-  defp get_body(%HTTPotion.Response{body: body, status_code: 200}) do
-    Poison.decode(body) |> get_access_token
-  end
-  defp get_body(%HTTPotion.ErrorResponse{message: error}) do
-    {:error, error}
-  end
-
-  defp get_access_token({:ok, %{"error" => error_message}}) do
-    {:error, error_message}
-  end
-  defp get_access_token({:ok, %{"access_token" => token}}) do
-    {:ok, token}
-  end
-  defp get_access_token(error) do
-    error
+  defp get_access_token(body) do
+    case Poison.decode(body) do
+      {:ok, %{"access_token" => token}} ->
+        {:ok, token}
+      {:ok, %{"error" => error_message}} ->
+        {:error, error_message}
+      error ->
+        error
+    end
   end
 
   def get_token! do
