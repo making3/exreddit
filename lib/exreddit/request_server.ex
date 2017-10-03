@@ -19,7 +19,9 @@ defmodule ExReddit.RequestServer do
     process_pop(:queue.out(queue))
   end
 
-  defp process_pop({:empty, queue}), do: {:noreply, queue}
+  defp process_pop({:empty, queue}) do
+    {:noreply, queue}
+  end
   defp process_pop({{:value, {from, {uri, token, opts}}}, queue}) do
     reply = reddit_request(uri, token, opts)
     GenServer.reply(from, reply)

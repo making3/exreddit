@@ -7,7 +7,9 @@ defmodule ExReddit.OAuth do
     Poison.decode(body)
       |> get_access_token
   end
-  defp get_body(%HTTPotion.ErrorResponse{message: error}), do: {:error, error}
+  defp get_body(%HTTPotion.ErrorResponse{message: error}) do
+    {:error, error}
+  end
 
   defp get_access_token({:ok, %{"error" => error_message}}) do
     {:error, error_message}
@@ -15,7 +17,9 @@ defmodule ExReddit.OAuth do
   defp get_access_token({:ok, %{"access_token" => token}}) do
     {:ok, token}
   end
-  defp get_access_token(error), do: error
+  defp get_access_token(error) do
+    error
+  end
 
   def get_token! do
     request_token!().body

@@ -14,8 +14,6 @@ defmodule ExReddit.Api do
     respond(token, response)
   end
 
-  def get_thread_from_result({:ok, [thread, _]}), do: thread
-
   defp respond(token, %HTTPotion.Response{status_code: 302, headers: %HTTPotion.Headers{hdrs: %{"location" => location}}}) do
     request({:url, location}, token)
   end

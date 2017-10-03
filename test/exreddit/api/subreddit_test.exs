@@ -8,12 +8,17 @@ defmodule ExReddit.Api.SubredditTest do
   @moduletag :subreddit
 
   setup_all do
-    token = ExReddit.OAuth.get_token!
+    token = Application.get_env(:exreddit, :token)
     {:ok, token: token}
   end
 
   test "get_sticky test", state do
-    dater = Subreddit.get_sticky(state[:token], "learnprogramming", 1)
-    IO.inspect(dater)
+    {:ok, response} = Subreddit.get_sticky(state[:token], "learnprogramming", 1)
+    assert length(response) > 0
+  end
+
+  test "get_sticky! test", state do
+    response = Subreddit.get_sticky!(state[:token], "learnprogramming", 1)
+    assert length(response) > 0
   end
 end
