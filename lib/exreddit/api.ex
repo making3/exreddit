@@ -2,12 +2,6 @@ require Poison
 require HTTPotion
 
 defmodule ExReddit.Api do
-  def get_comments(token, subreddit, thread_id, opts) do
-    request({:uri, "/r/#{subreddit}/comments/#{thread_id}"}, token, opts)
-    |> Map.get(:body)
-    |> get_request_body
-  end
-
   def request(params, token, opts \\ []) do
     response = GenServer.call(RequestServer, {:request, {params, token, opts}})
     respond(token, response)
@@ -34,8 +28,11 @@ defmodule ExReddit.Api do
     {:error, error_message}
   end
 
-  def get_request_body(""), do: ""
-  def get_request_body(body), do: Poison.decode(body) |> ok
-
-  defp ok({:ok, result}), do: result
+  def get_request_data({:ok, response}) do
+      response_data = response |> Map.get("data")
+      {:ok, response_data}
+  end
+  def get_request_data(other) do
+    other
+  end
 end
