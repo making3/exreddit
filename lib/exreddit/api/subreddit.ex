@@ -15,8 +15,11 @@ defmodule ExReddit.Api.Subreddit do
   end
 
   def get_new_threads(token, subreddit, opts \\ []) do
-    request({:uri, "/r/#{subreddit}/new"}, token, opts)
-    |> Map.get(:body)
-    |> get_request_body
+    case request({:uri, "/r/#{subreddit}/new"}, token, opts) do
+      {:ok, response} ->
+        response_data = response |> Map.get("data")
+        {:ok, response_data}
+      other -> other
+    end
   end
 end
