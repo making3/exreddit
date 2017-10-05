@@ -1,8 +1,17 @@
+require Poison
+
 defmodule ExReddit.OAuth do
   def get_token do
     case request_token() do
       %HTTPotion.Response{body: body, status_code: 200} ->
         get_access_token(body)
+      %HTTPotion.Response{body: body, status_code: status_code} when status_code not in 200..299 ->
+        case Poison.decode(body) do
+          {:ok, decoded_body} ->
+            error_message = Map.get(decoded_body, "message")
+            {:error, error_message}
+          other -> other
+        end
       %HTTPotion.ErrorResponse{message: error_message} ->
         {:error, error_message}
       error ->

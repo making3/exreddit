@@ -9,6 +9,7 @@ defmodule ExReddit.OAuthTest do
 
   setup do
     Application.put_env(:exreddit, :username, System.get_env("REDDIT_USER"))
+    Application.put_env(:exreddit, :client_id, System.get_env("REDDIT_CLIENT_ID"))
   end
 
   test "get_token/0 should return {:ok, token}" do
@@ -18,6 +19,8 @@ defmodule ExReddit.OAuthTest do
 
   test "get_token/0 should return {:error, message} on bad auth data" do
     Application.put_env(:exreddit, :username, "")
+    {:error, _} = OAuth.get_token
+    Application.put_env(:exreddit, :client_id, "")
     {:error, _} = OAuth.get_token
   end
 
