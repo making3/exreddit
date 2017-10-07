@@ -4,9 +4,15 @@ Exreddit is a Reddit API Wrapper.
 
 ## Installation
 
-Until further development, add the following to Hex:
+Add the following to Hex:
 
 ```elixir
+def application do
+  [
+    applications: [:exreddit]
+  ]
+end
+
 def deps do
   [
     {:exreddit, git: "https://github.com/making3/exreddit.git", branch: "master"}
