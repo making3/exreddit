@@ -37,4 +37,17 @@ defmodule ExReddit.Api.SubredditTest do
   test "get_new_threads/2 should fail with empty subreddit", state do
     {:error, _} = Subreddit.get_new_threads(state[:token], "")
   end
+
+  test "get_comments/3 test", state do
+    {:ok, comments} = Subreddit.get_comments(state[:token], "pics", "73w8zb")
+    assert length(comments) > 0
+  end
+
+  test "get_comments/3 should fail with empty subreddit", state do
+    {:error, _} = Subreddit.get_comments(state[:token], "", "74dfgq")
+  end
+
+  test "get_comments/3 should fail with empty thread_id", state do
+    {:error, _} = Subreddit.get_comments(state[:token], "learnprogramming", "")
+  end
 end
