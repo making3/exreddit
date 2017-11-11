@@ -1,37 +1,27 @@
 
 defmodule ExReddit.OAuth do
+  # @success 200..299
   alias HTTPotion.{Response, ErrorResponse}
 
   require Poison
 
-  def get_token do
-    case request_token() do
-      %Response{body: body, status_code: 200} ->
-        get_access_token(body)
-      %Response{body: body, status_code: status_code} when status_code not in 200..299 ->
-        case Poison.decode(body) do
-          {:ok, decoded_body} ->
-            error_message = Map.get(decoded_body, "message")
-            {:error, error_message}
-          other -> other
-        end
-      %ErrorResponse{message: error_message} ->
-        {:error, error_message}
-      error ->
-        error
-    end
-  end
+  def get_token, do: request_token() |> parse()
 
-  defp get_access_token(body) do
-    case Poison.decode(body) do
-      {:ok, %{"access_token" => token}} ->
-        {:ok, token}
-      {:ok, %{"error" => error_message}} ->
-        {:error, error_message}
-      error ->
-        error
-    end
-  end
+  defp parse(%Response{body: body, status_code: code}),
+    do: Poison.decode(body) |> parse_body(code)
+  defp parse(%ErrorResponse{message: error}),
+    do: {:error, error}
+  defp parse(unknown),
+    do: {:unknown, unknown}
+
+  defp parse_body({:ok, %{"access_token" => token}}, 200),
+    do: {:ok, token}
+  defp parse_body({:ok, %{"error" => error}}, _),
+    do: {:error, error}
+  defp parse_body({:ok, %{"message" => message}}, _),
+    do: {:error, message}
+  defp parse_body({_, unknown}, _),
+    do: {:unknown, unknown}
 
   def get_token! do
     request_token!().body
