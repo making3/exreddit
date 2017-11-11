@@ -1,8 +1,8 @@
-alias ExReddit.OAuth, as: OAuth
-
 defmodule ExReddit.OAuthTest do
   use ExUnit.Case
   doctest ExReddit.OAuth
+
+  alias ExReddit.OAuth
 
   @moduletag :reddit_api
   @moduletag :oauth

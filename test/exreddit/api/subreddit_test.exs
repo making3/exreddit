@@ -1,8 +1,9 @@
-alias ExReddit.Api.Subreddit, as: Subreddit
 
 defmodule ExReddit.Api.SubredditTest do
   use ExUnit.Case
   doctest ExReddit.Api.Subreddit
+
+  alias ExReddit.Api.Subreddit
 
   @moduletag :reddit_api
   @moduletag :subreddit
