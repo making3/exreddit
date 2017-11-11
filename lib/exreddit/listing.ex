@@ -1,4 +1,4 @@
-defmodule ExReddit.Thread do
+defmodule ExReddit.Listing do
   def parse_api_response([submission_listing, comments_listing] ) do
     submission = get_submission(submission_listing)
     comments = get_comments(comments_listing)

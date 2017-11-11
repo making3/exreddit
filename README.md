@@ -1,6 +1,14 @@
-# exreddit
+# ExReddit
 
 Exreddit is a Reddit API Wrapper.
+
+## Example
+
+    token = ExReddit.OAuth.get_token()
+    subreddit = "learnprogramming"
+    options = [limit:1]
+
+    {:ok, threads} = ExReddit.Api.get_new_threads(token, subreddit, options)
 
 ## Installation
 
@@ -22,6 +30,14 @@ end
 
 ### Configuration
 
+    config :exreddit,
+      username: System.get_env("REDDIT_USER"),
+      password: System.get_env("REDDIT_PASS"),
+      client_id: System.get_env("REDDIT_CLIENT_ID"),
+      secret: System.get_env("REDDIT_SECRET"),
+      api_rate_limit_delay: 1000      # In milliseconds
+
+
 It is recommended to create the following environment variables for configuring your user:
 
 - `REDDIT_USER`
@@ -29,21 +45,13 @@ It is recommended to create the following environment variables for configuring 
 - `REDDIT_CLIENT_ID`
 - `REDDIT_SECRET`
 
-Otherwise, in config/config.exs, add the following:
-
-    config :exreddit,
-      username: "username",
-      password: "password",
-      client_id: "client_id",
-      secret: "client_secret"
-
 ## Usage
 
     token = ExReddit.OAuth.get_token()
     subreddit = "learnprogramming"
     options = [limit:1]
 
-    ExReddit.Api.get_new_threads(token, subreddit, options)
+    {:ok, threads} = ExReddit.Api.get_new_threads(token, subreddit, options)
 
 ## Development
 

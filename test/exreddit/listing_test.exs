@@ -1,8 +1,8 @@
-defmodule ExReddit.ThreadTest do
+defmodule ExReddit.ListingTest do
   use ExUnit.Case
-  doctest ExReddit.Thread
+  doctest ExReddit.Listing
 
-  alias ExReddit.Thread
+  alias ExReddit.Listing
 
   setup do
     json =
@@ -14,7 +14,7 @@ defmodule ExReddit.ThreadTest do
   end
 
   test "should parse response", state do
-    {thread, comments} = Thread.parse_api_response(state[:json])
+    {thread, comments} = Listing.parse_api_response(state[:json])
 
     assert thread["subreddit"] == "javascript"
     assert thread["domain"] == "2ality.com"

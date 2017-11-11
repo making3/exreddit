@@ -1,6 +1,5 @@
 defmodule ExReddit.Requests.Server do
   use GenServer
-  @delay_seconds 1
 
   def start_link(options) do
     GenServer.start_link(__MODULE__, :ok, options)
@@ -11,7 +10,7 @@ defmodule ExReddit.Requests.Server do
   end
 
   def init(_) do
-    :timer.send_interval(@delay_seconds * 1000, :tick)
+    :timer.send_interval(get_rate_limit_delay(), :tick)
     {:ok, :queue.new}
   end
 
@@ -22,10 +21,15 @@ defmodule ExReddit.Requests.Server do
   defp process_pop({:empty, queue}) do
     {:noreply, queue}
   end
+
   defp process_pop({{:value, {from, {uri, token, opts}}}, queue}) do
     reply = reddit_request(uri, token, opts)
     GenServer.reply(from, reply)
     {:noreply, queue}
+  end
+
+  def get_rate_limit_delay() do
+    Application.get_env(:exreddit, :api_rate_limit_delay)
   end
 
   defp reddit_request({:url, url}, token, options) do
