@@ -1,6 +1,4 @@
-
 defmodule ExReddit.OAuth do
-  # @success 200..299
   alias HTTPotion.{Response, ErrorResponse}
 
   require Poison
