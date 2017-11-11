@@ -1,3 +1,4 @@
+# TODO: Rename / move elsewhere.
 defmodule ExReddit.Helper do
   def get_thread_selftext(thread) do
     thread

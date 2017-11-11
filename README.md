@@ -29,8 +29,6 @@ It is recommended to create the following environment variables for configuring 
 - `REDDIT_CLIENT_ID`
 - `REDDIT_SECRET`
 
-
-
 Otherwise, in config/config.exs, add the following:
 
     config :exreddit,

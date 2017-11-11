@@ -1,4 +1,4 @@
-defmodule ExReddit.RequestServer do
+defmodule ExReddit.Requests.Server do
   use GenServer
   @delay_seconds 1
 
