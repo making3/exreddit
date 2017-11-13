@@ -1,4 +1,3 @@
-
 defmodule ExReddit.Api.SubredditTest do
   use ExUnit.Case
   doctest ExReddit.Api.Subreddit

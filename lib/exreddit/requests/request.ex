@@ -1,23 +1,46 @@
 defmodule ExReddit.Requests.Request do
+  @reddit_url "https://reddit.com"
   @reddit_auth_url "https://oauth.reddit.com"
 
-  def get_with_token(uri, token, options \\ []) do
-    full_url = get_full_token_url(uri, options)
-    headers = get_headers(token)
-    HTTPotion.get(full_url, headers)
+  def get(uri, options \\ []) do
+    url = get_url(uri, options)
+    HTTPotion.get(url)
   end
 
-  defp get_full_token_url({:url, url}, options) do
+  def get_with_token(uri, token, options \\ []) do
+    url = get_token_url(uri, options)
+    headers = get_headers(token)
+    HTTPotion.get(url, headers)
+  end
+
+  defp get_url({:url, url}, options) do
+    get_url_with_query(url, options)
+  end
+
+  defp get_url({:uri, uri}, options) do
+    url = get_full_url(@reddit_url, uri)
+    get_url({:url, url}, options)
+  end
+
+  defp get_token_url({:url, url}, options) do
+    get_url_with_query(url, options)
+  end
+
+  defp get_token_url({:uri, endpoint}, options) do
+    url = get_full_url(@reddit_auth_url, endpoint)
+    get_token_url({:url, url}, options)
+  end
+
+  defp get_url_with_query(url, options) do
     query = get_query(options)
     "#{url}/#{query}"
   end
 
-  defp get_full_token_url({:uri, endpoint}, options) do
-    url = @reddit_auth_url
+  defp get_full_url(url, path) do
+    url
     |> URI.parse()
-    |> URI.merge(endpoint)
+    |> URI.merge(path)
     |> URI.to_string()
-    get_full_token_url({:url, url}, options)
   end
 
   defp get_query(options) do
