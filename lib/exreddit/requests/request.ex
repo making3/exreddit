@@ -1,14 +1,23 @@
 defmodule ExReddit.Requests.Request do
-  def get({:url, url}, token, options) do
-    query = get_query(options)
-    url_with_query = "#{url}/#{query}"
+  @reddit_auth_url "https://oauth.reddit.com"
+
+  def get_with_token(uri, token, options \\ []) do
+    full_url = get_full_token_url(uri, options)
     headers = get_headers(token)
-    HTTPotion.get(url_with_query, headers)
+    HTTPotion.get(full_url, headers)
   end
 
-  def get({:uri, endpoint}, token, options) do
-    url = "https://oauth.reddit.com#{endpoint}"
-    get({:url, url}, token, options)
+  defp get_full_token_url({:url, url}, options) do
+    query = get_query(options)
+    "#{url}/#{query}"
+  end
+
+  defp get_full_token_url({:uri, endpoint}, options) do
+    url = @reddit_auth_url
+    |> URI.parse()
+    |> URI.merge(endpoint)
+    |> URI.to_string()
+    get_full_token_url({:url, url}, options)
   end
 
   defp get_query(options) do

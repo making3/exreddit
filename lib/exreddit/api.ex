@@ -5,7 +5,7 @@ defmodule ExReddit.Api do
   alias HTTPotion.{Response, Headers, ErrorResponse}
 
   def get(params, token, opts \\ []) do
-    response = RequestServer.get(params, token, opts)
+    response = RequestServer.get_with_token(params, token, opts)
     respond(token, response)
   end
 

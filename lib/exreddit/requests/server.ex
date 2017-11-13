@@ -8,9 +8,9 @@ defmodule ExReddit.Requests.Server do
     GenServer.start_link(__MODULE__, :ok, options)
   end
 
-  def get(uri, token, opts) do
+  def get_with_token(uri, token, opts) do
     req = fn ->
-      Request.get(uri, token, opts)
+      Request.get_with_token(uri, token, opts)
     end
     GenServer.call(__MODULE__, {:request, req})
   end
