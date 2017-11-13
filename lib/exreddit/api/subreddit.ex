@@ -1,8 +1,8 @@
-require Poison
-require HTTPotion
-
 defmodule ExReddit.Api.Subreddit do
   import ExReddit.Api
+
+  require Poison
+  require HTTPotion
 
   def get_sticky(token, subreddit, num \\ 1) do
     request({:uri, "/r/#{subreddit}/about/sticky"}, token, [num: num])
