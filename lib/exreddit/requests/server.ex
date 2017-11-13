@@ -1,7 +1,7 @@
 defmodule ExReddit.Requests.Server do
   use GenServer
 
-  alias ExReddit.Requests.Request
+  alias ExReddit.Request
 
   ## Client API
   def start_link(options) do

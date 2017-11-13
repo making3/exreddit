@@ -1,4 +1,4 @@
-defmodule ExReddit.Requests.Request do
+defmodule ExReddit.Request do
   @reddit_url "https://reddit.com"
   @reddit_auth_url "https://oauth.reddit.com"
 
