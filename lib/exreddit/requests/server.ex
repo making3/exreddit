@@ -3,12 +3,21 @@ defmodule ExReddit.Requests.Server do
 
   alias ExReddit.Requests.Request
 
+  ## Client API
   def start_link(options) do
     GenServer.start_link(__MODULE__, :ok, options)
   end
 
-  def handle_call({:request, params}, from, queue) do
-    {:noreply, :queue.in({from, params}, queue)}
+  def get(uri, token, opts) do
+    req = fn ->
+      Request.get(uri, token, opts)
+    end
+    GenServer.call(__MODULE__, {:request, req})
+  end
+
+  ## Server API
+  def handle_call({:request, request}, from, queue) do
+    {:noreply, :queue.in({from, request}, queue)}
   end
 
   def init(_) do
@@ -24,9 +33,8 @@ defmodule ExReddit.Requests.Server do
     {:noreply, queue}
   end
 
-  defp process_pop({{:value, {from, {uri, token, opts}}}, queue}) do
-    # TODO: Allow other types of request (post, put, del)
-    reply = Request.get(uri, token, opts)
+  defp process_pop({{:value, {from, request}}, queue}) do
+    reply = request.()
     GenServer.reply(from, reply)
     {:noreply, queue}
   end

@@ -7,7 +7,7 @@ defmodule ExReddit.Supervisor do
 
   def init(:ok) do
     children = [
-      {ExReddit.Requests.Server, name: Requests}
+      {ExReddit.Requests.Server, name: ExReddit.Requests.Server}
     ]
 
     Supervisor.init(children, strategy: :one_for_one)

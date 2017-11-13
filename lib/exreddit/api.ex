@@ -1,14 +1,16 @@
 defmodule ExReddit.Api do
   require Poison
+
+  alias ExReddit.Requests.Server, as: RequestServer
   alias HTTPotion.{Response, Headers, ErrorResponse}
 
-  def request(params, token, opts \\ []) do
-    response = GenServer.call(Requests, {:request, {params, token, opts}})
+  def get(params, token, opts \\ []) do
+    response = RequestServer.get(params, token, opts)
     respond(token, response)
   end
 
   defp respond(token, %Response{status_code: 302, headers: %Headers{hdrs: %{"location" => location}}}) do
-    request({:url, location}, token)
+    get({:url, location}, token)
   end
   defp respond(_, %Response{body: %{"error" => error_message}, status_code: 200}) do
     {:error, error_message}
