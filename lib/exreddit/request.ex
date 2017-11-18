@@ -1,5 +1,5 @@
 defmodule ExReddit.Request do
-  @reddit_url "https://reddit.com"
+  @reddit_url "https://www.reddit.com"
   @reddit_auth_url "https://oauth.reddit.com"
 
   def get(uri, options \\ []) do
@@ -18,7 +18,7 @@ defmodule ExReddit.Request do
   end
 
   defp get_url({:uri, uri}, options) do
-    url = get_full_url(@reddit_url, uri)
+    url = get_full_url(@reddit_url, uri) <> ".json"
     get_url({:url, url}, options)
   end
 
@@ -33,7 +33,7 @@ defmodule ExReddit.Request do
 
   defp get_url_with_query(url, options) do
     query = get_query(options)
-    "#{url}/#{query}"
+    "#{url}#{query}"
   end
 
   defp get_full_url(url, path) do
