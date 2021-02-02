@@ -44,9 +44,12 @@ defmodule ExReddit.Request do
   end
 
   defp get_query(options) do
-    query = options
-    |> Enum.map(fn {key, value} -> "#{key}=#{value}" end) # TODO: Can this be cleaned up / shortened?
-    |> Enum.join("&")
+    query =
+      options
+      # TODO: Can this be cleaned up / shortened?
+      |> Enum.map(fn {key, value} -> "#{key}=#{value}" end)
+      |> Enum.join("&")
+
     "?#{query}"
   end
 
@@ -54,7 +57,7 @@ defmodule ExReddit.Request do
     [
       headers: [
         "User-Agent": "exreddit-api-wrapper/0.1 by yeamanz",
-        "Authorization": "bearer #{token}"
+        Authorization: "bearer #{token}"
       ]
     ]
   end

@@ -5,10 +5,11 @@ defmodule ExReddit.Api.Subreddit do
   require HTTPotion
 
   def get_sticky(token, subreddit, num \\ 1) do
-    get({:uri, "/r/#{subreddit}/about/sticky"}, token, [num: num])
+    get({:uri, "/r/#{subreddit}/about/sticky"}, token, num: num)
   end
+
   def get_sticky!(token, subreddit, num \\ 1) do
-    case get({:uri, "/r/#{subreddit}/about/sticky"}, token, [num: num]) do
+    case get({:uri, "/r/#{subreddit}/about/sticky"}, token, num: num) do
       {:ok, response} -> response
       other -> other
     end
@@ -21,5 +22,15 @@ defmodule ExReddit.Api.Subreddit do
 
   def get_comments(token, subreddit, thread_id, opts \\ []) do
     get({:uri, "/r/#{subreddit}/comments/#{thread_id}"}, token, opts)
+  end
+
+  def get_hot_threads(token, subreddit, opts \\ []) do
+    get({:uri, "/r/#{subreddit}/hot"}, token, opts)
+    |> get_request_data
+  end
+
+  def get_top_threads(token, subreddit, opts \\ []) do
+    get({:uri, "/r/#{subreddit}/top"}, token, opts)
+    |> get_request_data
   end
 end

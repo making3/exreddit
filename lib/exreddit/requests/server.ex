@@ -12,6 +12,7 @@ defmodule ExReddit.Requests.Server do
     req = fn ->
       Request.get_with_token(uri, token, opts)
     end
+
     GenServer.call(__MODULE__, {:request, req})
   end
 
@@ -22,7 +23,7 @@ defmodule ExReddit.Requests.Server do
 
   def init(_) do
     :timer.send_interval(get_rate_limit_delay(), :tick)
-    {:ok, :queue.new}
+    {:ok, :queue.new()}
   end
 
   def handle_info(:tick, queue) do
