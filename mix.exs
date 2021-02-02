@@ -22,7 +22,7 @@ defmodule ExReddit.Mixfile do
   defp deps do
     [
       {:httpotion, "~> 3.1"},
-      {:poison, "~> 3.1"}
+      {:poison, "~> 4.0"}
     ]
   end
 end
