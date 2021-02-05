@@ -13,7 +13,7 @@ defmodule ExReddit.Requests.Server do
       Request.get_with_token(uri, token, opts)
     end
 
-    GenServer.call(__MODULE__, {:request, req}, 30_000)
+    GenServer.call(__MODULE__, {:request, req})
   end
 
   ## Server API
