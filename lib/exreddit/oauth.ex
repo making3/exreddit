@@ -34,12 +34,14 @@ defmodule ExReddit.OAuth do
 
   defp request_token do
     headers = get_auth_headers()
-    HTTPotion.post("https://www.reddit.com/api/v1/access_token", headers)
+    opts = headers ++ [timeout: 30_000]
+    HTTPotion.post("https://www.reddit.com/api/v1/access_token", opts)
   end
 
   defp request_token! do
     headers = get_auth_headers()
-    HTTPotion.post!("https://www.reddit.com/api/v1/access_token", headers)
+    opts = headers ++ [timeout: 30_000]
+    HTTPotion.post!("https://www.reddit.com/api/v1/access_token", opts)
   end
 
   defp get_auth_headers do

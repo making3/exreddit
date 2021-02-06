@@ -4,13 +4,14 @@ defmodule ExReddit.Request do
 
   def get(uri, options \\ []) do
     url = get_url(uri, options)
-    HTTPotion.get(url)
+    HTTPotion.get(url, timeout: 30_000)
   end
 
   def get_with_token(uri, token, options \\ []) do
     url = get_token_url(uri, options)
     headers = get_headers(token)
-    HTTPotion.get(url, headers)
+    opts = headers ++ [timeout: 30_000]
+    HTTPotion.get(url, opts)
   end
 
   defp get_url({:url, url}, options) do
