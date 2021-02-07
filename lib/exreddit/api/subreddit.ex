@@ -33,4 +33,8 @@ defmodule ExReddit.Api.Subreddit do
     get({:uri, "/r/#{subreddit}/top"}, token, opts)
     |> get_request_data
   end
+
+  def get_more_children(token, id, opts \\ []) do
+    get({:uri, "/api/morechildren"}, token, opts)
+  end
 end
