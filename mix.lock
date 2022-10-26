@@ -1,5 +1,6 @@
 %{
-  "httpotion": {:hex, :httpotion, "3.1.3", "fdaf1e16b9318dcb722de57e75ac368c93d4c6e3c9125f93e960f953a750fb77", [:mix], [{:ibrowse, "== 4.4.0", [hex: :ibrowse, repo: "hexpm", optional: false]}], "hexpm", "e420172ef697a0f1f4dc40f89a319d5a3aad90ec51fa424f08c115f04192ae43"},
+  "httpotion": {:hex, :httpotion, "3.2.0", "007c81c3a15b4860c893dea858eab2ce859a260b47071e85dcf9611a4226324e", [:mix], [{:ibrowse, "== 4.4.0", [hex: :ibrowse, repo: "hexpm", optional: false]}, {:ssl_verify_fun, "~> 1.1", [hex: :ssl_verify_fun, repo: "hexpm", optional: false]}], "hexpm", "726b3fdfc47d7f15302dac5f6a4152a5002fe8230dee8bdd65b8d154b573580b"},
   "ibrowse": {:hex, :ibrowse, "4.4.0", "2d923325efe0d2cb09b9c6a047b2835a5eda69d8a47ed6ff8bc03628b764e991", [:rebar3], [], "hexpm", "6a8e5988872086f0506bef68311493551ac5beae7c06ba2a00d5e9f97a60f1c2"},
   "poison": {:hex, :poison, "4.0.1", "bcb755a16fac91cad79bfe9fc3585bb07b9331e50cfe3420a24bcc2d735709ae", [:mix], [], "hexpm", "ba8836feea4b394bb718a161fc59a288fe0109b5006d6bdf97b6badfcf6f0f25"},
+  "ssl_verify_fun": {:hex, :ssl_verify_fun, "1.1.6", "cf344f5692c82d2cd7554f5ec8fd961548d4fd09e7d22f5b62482e5aeaebd4b0", [:make, :mix, :rebar3], [], "hexpm", "bdb0d2471f453c88ff3908e7686f86f9be327d065cc1ec16fa4540197ea04680"},
 }
