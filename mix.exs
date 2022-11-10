@@ -6,7 +6,7 @@ defmodule ExReddit.Mixfile do
       app: :exreddit,
       version: "0.1.0",
       elixir: "~> 1.5",
-      start_permanent: Mix.env == :prod,
+      start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
   end
@@ -21,8 +21,8 @@ defmodule ExReddit.Mixfile do
 
   defp deps do
     [
-      {:httpotion, "~> 3.0.2"},
-      {:poison, "~> 3.1"}
+      {:httpotion, "~> 3.1"},
+      {:poison, "~> 4.0"}
     ]
   end
 end

@@ -4,13 +4,14 @@ defmodule ExReddit.Request do
 
   def get(uri, options \\ []) do
     url = get_url(uri, options)
-    HTTPotion.get(url)
+    HTTPotion.get(url, timeout: 30_000)
   end
 
   def get_with_token(uri, token, options \\ []) do
     url = get_token_url(uri, options)
     headers = get_headers(token)
-    HTTPotion.get(url, headers)
+    opts = headers ++ [timeout: 30_000]
+    HTTPotion.get(url, opts)
   end
 
   defp get_url({:url, url}, options) do
@@ -44,9 +45,12 @@ defmodule ExReddit.Request do
   end
 
   defp get_query(options) do
-    query = options
-    |> Enum.map(fn {key, value} -> "#{key}=#{value}" end) # TODO: Can this be cleaned up / shortened?
-    |> Enum.join("&")
+    query =
+      options
+      # TODO: Can this be cleaned up / shortened?
+      |> Enum.map(fn {key, value} -> "#{key}=#{value}" end)
+      |> Enum.join("&")
+
     "?#{query}"
   end
 
@@ -54,7 +58,7 @@ defmodule ExReddit.Request do
     [
       headers: [
         "User-Agent": "exreddit-api-wrapper/0.1 by yeamanz",
-        "Authorization": "bearer #{token}"
+        Authorization: "bearer #{token}"
       ]
     ]
   end

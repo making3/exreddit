@@ -29,7 +29,7 @@ defmodule ExReddit.Api.SubredditTest do
   end
 
   test "get_new_threads/3 with [limit: 1] test", state do
-    {:ok, response} = Subreddit.get_new_threads(state[:token], "learnprogramming", [limit: 1])
+    {:ok, response} = Subreddit.get_new_threads(state[:token], "learnprogramming", limit: 1)
     threads = response |> Map.get("children")
     assert length(threads) == 1
   end

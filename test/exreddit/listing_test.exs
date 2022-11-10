@@ -6,7 +6,7 @@ defmodule ExReddit.ListingTest do
 
   setup do
     json =
-      Path.expand('./test/examples/submission.json' )
+      Path.expand('./test/examples/submission.json')
       |> File.read!()
       |> Poison.decode!()
 
