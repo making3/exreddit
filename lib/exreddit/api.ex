@@ -2,29 +2,30 @@ defmodule ExReddit.Api do
   require Poison
 
   alias ExReddit.Requests.Server, as: RequestServer
-  alias HTTPotion.{Response, Headers, ErrorResponse}
+  alias HTTPoison.{Response, Error}
 
   def get(params, token, opts \\ []) do
+    IO.inspect(params)
     response = RequestServer.get_with_token(params, token, opts)
     respond(token, response)
   end
 
-  defp respond(token, %Response{
+  defp respond(token,{:ok, %Response{
          status_code: 302,
-         headers: %Headers{hdrs: %{"location" => location}}
-       }) do
+         headers: [{"location", location}]
+       }}) do
     get({:url, location}, token)
   end
 
-  defp respond(_, %Response{body: %{"error" => error_message}, status_code: 200}) do
+  defp respond(_, {:ok, %Response{body: %{"error" => error_message}, status_code: 200}}) do
     {:error, error_message}
   end
 
-  defp respond(_, %Response{body: body, status_code: 200}) do
+  defp respond(_, {:ok, %Response{body: body, status_code: 200}}) do
     Poison.decode(body)
   end
 
-  defp respond(_, %Response{body: body, status_code: status_code})
+  defp respond(_, {:ok, %Response{body: body, status_code: status_code}})
        when status_code not in 200..299 do
     case Poison.decode(body) do
       {:ok, decoded_body} ->
@@ -36,7 +37,7 @@ defmodule ExReddit.Api do
     end
   end
 
-  defp respond(_, %ErrorResponse{message: error_message}) do
+  defp respond(_, {:ok, %Error{reason: error_message}}) do
     {:error, error_message}
   end
 

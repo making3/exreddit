@@ -2,7 +2,7 @@ defmodule ExReddit.Api.Subreddit do
   import ExReddit.Api
 
   require Poison
-  require HTTPotion
+  require HTTPoison
 
   def get_sticky(token, subreddit, num \\ 1) do
     get({:uri, "/r/#{subreddit}/about/sticky"}, token, num: num)
@@ -17,6 +17,7 @@ defmodule ExReddit.Api.Subreddit do
 
   def get_new_threads(token, subreddit, opts \\ []) do
     get({:uri, "/r/#{subreddit}/new"}, token, opts)
+    |> IO.inspect()
     |> get_request_data
   end
 

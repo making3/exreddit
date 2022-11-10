@@ -4,14 +4,14 @@ defmodule ExReddit.Request do
 
   def get(uri, options \\ []) do
     url = get_url(uri, options)
-    HTTPotion.get(url, timeout: 30_000)
+    HTTPoison.get(url, timeout: 30_000)
   end
 
   def get_with_token(uri, token, options \\ []) do
     url = get_token_url(uri, options)
     headers = get_headers(token)
-    opts = headers ++ [timeout: 30_000]
-    HTTPotion.get(url, opts)
+    opts = [timeout: 30_000]
+    HTTPoison.get(url, headers, opts)
   end
 
   defp get_url({:url, url}, options) do
@@ -56,10 +56,8 @@ defmodule ExReddit.Request do
 
   defp get_headers(token) do
     [
-      headers: [
-        "User-Agent": "exreddit-api-wrapper/0.1 by yeamanz",
-        Authorization: "bearer #{token}"
-      ]
+      {"User-Agent", "exreddit-api-wrapper/0.1 by yeamanz"},
+      {"Authorization", "bearer #{token}"}
     ]
   end
 end

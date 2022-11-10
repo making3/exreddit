@@ -1,14 +1,14 @@
 defmodule ExReddit.OAuth do
-  alias HTTPotion.{Response, ErrorResponse}
+  alias HTTPoison.{Response, Error}
 
   require Poison
 
   def get_token, do: request_token() |> parse()
 
-  defp parse(%Response{body: body, status_code: code}),
+  defp parse({:ok, %HTTPoison.Response{body: body, status_code: code}}),
     do: Poison.decode(body) |> parse_body(code)
 
-  defp parse(%ErrorResponse{message: error}),
+  defp parse(%Error{reason: error}),
     do: {:error, error}
 
   defp parse(unknown),
@@ -17,8 +17,8 @@ defmodule ExReddit.OAuth do
   defp parse_body({:ok, %{"access_token" => token}}, 200),
     do: {:ok, token}
 
-  defp parse_body({:ok, %{"error" => error}}, _),
-    do: {:error, error}
+  defp parse_body({:ok, %{"error" => code, "message" => mesage} = resp}, _),
+    do: {:error, resp}
 
   defp parse_body({:ok, %{"message" => message}}, _),
     do: {:error, message}
@@ -33,28 +33,32 @@ defmodule ExReddit.OAuth do
   end
 
   defp request_token do
-    headers = get_auth_headers()
-    opts = headers ++ [timeout: 30_000]
-    HTTPotion.post("https://www.reddit.com/api/v1/access_token", opts)
+    config = get_config()
+
+    HTTPoison.post(
+      "https://www.reddit.com/api/v1/access_token", 
+      "grant_type=password&username=#{config[:username]}&password=#{config[:password]}", 
+      [
+        {"User-Agent", "exreddit-api-wrapper"},
+        {"Content-Type", "application/x-www-form-urlencoded"}
+      ],
+      hackney: [basic_auth: {config[:client_id], config[:secret]}]
+      #basic_auth: {config[:client_id], config[:secret]}
+    ) |> IO.inspect()
   end
 
   defp request_token! do
-    headers = get_auth_headers()
-    opts = headers ++ [timeout: 30_000]
-    HTTPotion.post!("https://www.reddit.com/api/v1/access_token", opts)
-  end
-
-  defp get_auth_headers do
     config = get_config()
 
-    [
-      body: "grant_type=password&username=#{config[:username]}&password=#{config[:password]}",
-      headers: [
-        "User-Agent": "exreddit-api-wrapper",
-        "Content-Type": "application/x-www-form-urlencoded"
+    HTTPoison.post!(
+      "https://www.reddit.com/api/v1/access_token", 
+      "grant_type=password&username=#{config[:username]}&password=#{config[:password]}", 
+      [
+        {"User-Agent", "exreddit-api-wrapper"},
+        {"Content-Type", "application/x-www-form-urlencoded"}
       ],
-      basic_auth: {config[:client_id], config[:secret]}
-    ]
+      hackney: [basic_auth: {config[:client_id], config[:secret]}]
+    )
   end
 
   defp get_config do
