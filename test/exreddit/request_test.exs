@@ -3,7 +3,7 @@ defmodule ExReddit.Api.RequestTest do
   doctest ExReddit.Request
 
   alias ExReddit.Request
-  alias HTTPotion.Response
+  alias HTTPoison.Response
 
   @moduletag :reddit_api
   @moduletag :request

@@ -14,14 +14,14 @@ defmodule ExReddit.Mixfile do
   def application do
     [
       mod: {ExReddit, []},
-      applications: [:httpotion],
-      extra_applications: [:logger]
+      applications: [:httpoison],
+      extra_applications: [:logger, :poison]
     ]
   end
 
   defp deps do
     [
-      {:httpotion, "~> 3.1"},
+      {:httpoison, "~> 1.8"},
       {:poison, "~> 4.0"}
     ]
   end
